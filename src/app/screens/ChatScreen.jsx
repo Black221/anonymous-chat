@@ -19,6 +19,8 @@ export const ChatScreen = () => {
         members
     } = useAppStateContext();
 
+    const refS = useRef();
+
     function useChatScroll(dep) {
         const ref = useRef();
         useEffect(() => {
@@ -29,6 +31,10 @@ export const ChatScreen = () => {
         return ref;
     }
 
+    const goTop = () => {
+        if (refS.current)
+            refS.current.scrollTop = refS.current.scrollHeight;
+    }
     const fetchPost = async () => {
 
         await onSnapshot(collection(db, "Messages"), (snapshot) => {
@@ -58,7 +64,7 @@ export const ChatScreen = () => {
                 <ChatHeadComponent name={name} members={members} />
             </div>
 
-            <div  className="flex-1 w-full border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
+            <div ref={refS} className="flex-1 w-full border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
 
                 {messages.map(({sender, message, color, date}, index) => {
                     return (
@@ -69,7 +75,7 @@ export const ChatScreen = () => {
             </div>
 
             <div className="h-16 p-2">
-                <ChatInputComponent />
+                <ChatInputComponent goTop={goTop} />
             </div>
         </div>
     )

@@ -1,13 +1,12 @@
-import {BsFillEmojiSmileFill} from "react-icons/bs";
+import {BsArrowDownCircleFill} from "react-icons/bs";
 import {FaTelegramPlane} from "react-icons/fa";
 import {useState} from "react";
-import {IoMdPhotos} from "react-icons/io";
 
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {addDoc, collection} from "firebase/firestore";
 import {db} from "../utils/firebase";
 
-export const ChatInputComponent = () => {
+export const ChatInputComponent = ({goTop}) => {
 
     const addMessage = async (message) => {
 
@@ -25,12 +24,8 @@ export const ChatInputComponent = () => {
     return (
         <div className="flex items-center space-x-4 px-4 w-full h-full text-gray-700">
 
-            <button>
-                <BsFillEmojiSmileFill size={20} />
-            </button>
-
-            <button>
-                <IoMdPhotos size={24} />
+            <button onClick={() => goTop()}>
+                <BsArrowDownCircleFill size={20} />
             </button>
 
             <input type="text"
