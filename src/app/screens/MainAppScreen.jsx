@@ -26,7 +26,7 @@ export const MainAppScreen = () => {
 
 
     return (
-        <div className="pt-0 md:p-4 p-1.5  h-screen max-h-screen">
+        <div className="pt-0 md:p-4 p-2  h-screen max-h-screen">
 
             <HeaderComponent />
 
