@@ -2,9 +2,7 @@ import {BsFillEmojiSmileFill} from "react-icons/bs";
 import {FaTelegramPlane} from "react-icons/fa";
 import {useState} from "react";
 import {IoMdPhotos} from "react-icons/io";
-import {useChatStateContext} from "../context/ChatContextProvider";
 
-import moment from "moment";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {addDoc, collection} from "firebase/firestore";
 import {db} from "../utils/firebase";
