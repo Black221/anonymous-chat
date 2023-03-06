@@ -5,7 +5,12 @@ module.exports = {
         "./src/App.js"
     ],
     theme: {
-        extend: {},
+        extend: {
+            maxWidth: {
+                '1/2': '70%',
+                '3/4': '85%',
+            }
+        },
     },
     plugins: [],
 }
