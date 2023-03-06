@@ -36,7 +36,7 @@ export const MainAppScreen = () => {
                     {isOpen && <SidebarComponent />}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                     <ChatContextProvider>
                         <ChatScreen />
                     </ChatContextProvider>

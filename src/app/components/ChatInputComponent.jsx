@@ -42,7 +42,7 @@ export const ChatInputComponent = () => {
                        setText(event.target.value);
                    }}/>
 
-            <button className="w-36" onClick={() => {
+            <button onClick={() => {
                 if (text != null && text !== "") {
                     addMessage({
                         sender: user.login,

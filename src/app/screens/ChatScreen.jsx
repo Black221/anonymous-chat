@@ -54,7 +54,7 @@ export const ChatScreen = () => {
                 <ChatHeadComponent name={name} members={members} />
             </div>
 
-            <div ref={ref} className="flex-1 border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
+            <div ref={ref} className="flex-1  border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
 
                 {messages.map(({sender, message, color, date}, index) => {
 

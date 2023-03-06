@@ -13,7 +13,7 @@ export const MessageComponent = ({sender, color, message, date}) => {
 
 
     return (
-        <div className={`mb-4 flex flex-col w-full ${user.login && user.login === sender ? "items-end rounded-tr-none" : "rounded-tl-none"}`}>
+        <div className={`mb-4 flex flex-col  ${user.login && user.login === sender ? "items-end rounded-tr-none" : "rounded-tl-none"}`}>
             <div className={`p-2 bg-gray-200  rounded-2xl w-fit ${user.login && user.login === sender ? "rounded-tr-none mr-2" : "rounded-tl-none  ml-2"} ${screenSize > 780 ? "max-w-1/2" : "max-w-3/4"}`}>
                 <div className={`${color} font-semibold`}>
                     {sender}
