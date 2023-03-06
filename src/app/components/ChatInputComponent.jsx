@@ -45,7 +45,7 @@ export const ChatInputComponent = ({goTop}) => {
                         message: text,
                         date: Date.now()
                     }).then(() => {
-
+                        goTop()
                     });
                     setText("");
                 }
