@@ -6,13 +6,13 @@ const StateContext = createContext(undefined);
 export const AppContextProvider = ({ children}) => {
     const [screenSize, setScreenSize] = useState(0);
     const [isLoading, setIsLoading] = useState(false)
-    const [userInfo, setUserInfo] = useState({login: "bouna"})
+    const [members, setMembers] = useState([])
     const [theme, setTheme] = useState("light")
     return (
         <StateContext.Provider value={{
             screenSize, setScreenSize,
             isLoading, setIsLoading,
-            userInfo, setUserInfo,
+            members, setMembers,
             theme, setTheme
         }}>
             {children}

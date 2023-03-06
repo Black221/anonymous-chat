@@ -5,15 +5,19 @@ import {MessageComponent} from "../components/MessageComponent";
 import {useEffect, useRef} from "react";
 import {collection, onSnapshot} from "firebase/firestore";
 import {db} from "../utils/firebase";
+import {useAppStateContext} from "../context/AppContextProvider";
 
 
 export const ChatScreen = () => {
 
     const {
         messages, setMessages,
-        members,
         name
     } = useChatStateContext ();
+
+    const {
+        members
+    } = useAppStateContext();
 
     function useChatScroll(dep) {
         const ref = useRef();
@@ -57,8 +61,8 @@ export const ChatScreen = () => {
             <div ref={ref} className="flex-1  border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
 
                 {messages.map(({sender, message, color, date}, index) => {
-
                     return (
+
                         <MessageComponent key={index} sender={sender} color={color} message={message} date={date} />
                     );
                 })}
