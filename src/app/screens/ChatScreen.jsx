@@ -2,21 +2,32 @@ import {ChatHeadComponent} from "../components/ChatHeadComponent";
 import {ChatInputComponent} from "../components/ChatInputComponent";
 import {useChatStateContext} from "../context/ChatContextProvider";
 import {MessageComponent} from "../components/MessageComponent";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {collection, onSnapshot} from "firebase/firestore";
 import {db} from "../utils/firebase";
 import {useAppStateContext} from "../context/AppContextProvider";
+import {ReplyComponent} from "../components/ReplyComponent";
+import {TiDelete} from "react-icons/ti";
 
 
 export const ChatScreen = () => {
 
     const {
         messages, setMessages,
-        name
+        name,
     } = useChatStateContext ();
 
+
+    const [countNewMes, setCountNewMes] = useState(0);
+    const [reply, setReply] = useState(null);
+
+    const resetReply = () => setReply(null);
+    const sendReply = (reply) => setReply(reply);
+
+
     const {
-        members
+        members,
+        chatroom
     } = useAppStateContext();
 
     const refS = useRef();
@@ -24,17 +35,44 @@ export const ChatScreen = () => {
     function useChatScroll(dep) {
         const ref = useRef();
         useEffect(() => {
-            if (ref.current) {
-                ref.current.scrollTop = ref.current.scrollHeight;
-            }
+            setCountNewMes((prevState) => {
+                console.log(prevState++)
+                return prevState ++;
+            });
+            console.log(countNewMes);
         }, [dep]);
+
         return ref;
     }
+
+    useEffect(() => {
+        console.log(chatroom)
+    }, [chatroom])
+
+    useEffect(() => {
+
+        const handleResize = () => {
+           if (refS.current)
+               if (refS.current.scrollTop === refS.current.scrollHeight)
+                   setCountNewMes(0);
+            console.log(refS.current)
+
+        }
+        if (refS.current) {
+
+            window.addEventListener('scroll', handleResize);
+
+            handleResize();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            return () => window.removeEventListener('scroll', handleResize);
+        }
+    } )
 
     const goTop = () => {
         if (refS.current)
             refS.current.scrollTop = refS.current.scrollHeight;
     }
+
     const fetchPost = async () => {
 
         await onSnapshot(collection(db, "Messages"), (snapshot) => {
@@ -47,8 +85,6 @@ export const ChatScreen = () => {
             })
             setMessages(mes);
         })
-
-
     }
 
     useEffect(()=>{
@@ -66,16 +102,28 @@ export const ChatScreen = () => {
 
             <div ref={refS} className="flex-1 w-full border-b-2 p-1 border-white overflow-y-auto scroll-smooth">
 
-                {messages.map(({sender, message, color, date}, index) => {
-                    return (
+                {messages.map(({sender, message, color, date, reply, poll, id}, index) => {
 
-                        <MessageComponent key={index} sender={sender} color={color} message={message} date={date} />
+                    return (
+                        <MessageComponent key={index} sender={sender} color={color} message={message} date={date} reply={reply} poll={poll} id={id} sendReply={sendReply}  />
                     );
                 })}
             </div>
 
-            <div className="h-16 p-2">
-                <ChatInputComponent goTop={goTop} />
+            {reply && <div className={`p-1 border-b-2 border-white bg-gray-200 `}>
+
+                <div className="flex justify-between text-gray-800 text-sm">
+
+                    <span>Répondre à</span>
+                    <button onClick={() => resetReply()}>
+                        <TiDelete size={18}/>
+                    </button>
+                </div>
+
+                <ReplyComponent reply={reply}  />
+            </div>}
+            <div ref={ref} className="h-16 p-2">
+                <ChatInputComponent goTop={goTop} reply={reply} resetReply={resetReply}/>
             </div>
         </div>
     )

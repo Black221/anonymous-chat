@@ -8,6 +8,4 @@ test('Test app', () => {
             <App />
         </AppContextProvider>
     );
-
-
 });
