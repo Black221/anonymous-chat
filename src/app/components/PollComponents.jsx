@@ -11,10 +11,10 @@ export const PollComponents = ({name, choice, mesId }) => {
         let poll = {name, choice}
         console.log(status)
         if (status) {
-            if (!poll.choice[index].vote.filter((item) => (item === user.login))[0])
-                poll.choice[index].vote.push(user.login);
+            if (!poll.choice[index].votes.filter((item) => (item === user.login))[0])
+                poll.choice[index].votes.push(user.login);
         } else
-            poll.choice[index].vote = poll.choice[index].vote.filter((item) => (item !== user.login));
+            poll.choice[index].votes = poll.choice[index].vote.filter((item) => (item !== user.login));
 
         try {
             await updateDoc(doc(db, "Messages", mesId), {poll : poll});
@@ -34,7 +34,7 @@ export const PollComponents = ({name, choice, mesId }) => {
 
                             }} type="checkbox" className="mr-2"/>
                             <span className="flex-1">{item.title}</span>
-                            <span className=" ml-2">{item.vote[0] ? item.vote.length : 0}</span>
+                            <span className=" ml-2">{item.votes[0] ? item.votes.length : 0}</span>
                         </div>
                     )
                 )}
