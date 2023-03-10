@@ -56,7 +56,7 @@ function App() {
         await onSnapshot(collection(db, "Members"), (snapshot) => {
             let mes = []; let i = 0;
             snapshot.docs.forEach((doc) => {
-                mes.push({...doc.data(), id: doc.id, color: doc.data().login === "TheD" ? "#000" : colorArray[i++]});
+                mes.push({...doc.data(), id: doc.id, color: doc.data().login === "TheD99" || doc.data().login === "CrâneDür100%" ? "#000" : colorArray[i++]});
                 if (i > colorArray.length)
                     i = 0;
             })

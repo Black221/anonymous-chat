@@ -82,8 +82,8 @@ export const LoginScreen = () => {
                         <button className="p-2 px-8 mt-4 text-xl font-semibold shadow  rounded-2xl"
                                 onClick={() => {
                                     if (name != null && name !== "")
-                                        newMember({login: name}).then(r => {
-                                            auth.login({login: name, token: "passer"})
+                                        newMember({login: name, admin: false}).then(r => {
+                                            auth.login({login: name, admin: false, token: "passer"})
                                             navigate('/', {replace: true})
                                         });
                                     else
