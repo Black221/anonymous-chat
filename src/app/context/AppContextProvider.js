@@ -15,7 +15,9 @@ export const AppContextProvider = ({ children}) => {
             isLoading, setIsLoading,
             chatroom, setChatroom,
             members, setMembers,
-            theme, setTheme
+            theme, setTheme,
+
+
         }}>
             {children}
         </StateContext.Provider>

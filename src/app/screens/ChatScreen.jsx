@@ -8,6 +8,7 @@ import {db} from "../utils/firebase";
 import {useAppStateContext} from "../context/AppContextProvider";
 import {ReplyComponent} from "../components/ReplyComponent";
 import {TiDelete} from "react-icons/ti";
+import {CreatePollComponent} from "../components/CreatePollComponent";
 
 
 export const ChatScreen = () => {
@@ -15,11 +16,13 @@ export const ChatScreen = () => {
     const {
         messages, setMessages,
         name,
+        openPoll,
     } = useChatStateContext ();
 
 
     const [countNewMes, setCountNewMes] = useState(0);
     const [reply, setReply] = useState(null);
+
 
     const resetReply = () => setReply(null);
     const sendReply = (reply) => setReply(reply);
@@ -122,8 +125,13 @@ export const ChatScreen = () => {
 
                 <ReplyComponent reply={reply}  />
             </div>}
+
+            {openPoll && <div className=" bottom-12 flex py-4 justify-center   bg-gray-200 " >
+                <CreatePollComponent  />
+            </div>}
+
             <div ref={ref} className="h-16 p-2">
-                <ChatInputComponent goTop={goTop} reply={reply} resetReply={resetReply}/>
+                <ChatInputComponent goTop={goTop} reply={reply} resetReply={resetReply} />
             </div>
         </div>
     )

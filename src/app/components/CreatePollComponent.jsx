@@ -1,11 +1,17 @@
 import {useEffect, useRef, useState} from "react";
 import {GrAdd} from "react-icons/gr";
+import {useChatStateContext} from "../context/ChatContextProvider";
 
 
 export const CreatePollComponent = ({sendPoll}) => {
 
     const [pollName, setPollName] = useState("");
     const [numberOfInput, setNumberOfInput] = useState([1,2]);
+
+    const {
+        setPoll,
+        openPoll
+    } = useChatStateContext();
 
     let ref = useRef()
 
@@ -14,32 +20,28 @@ export const CreatePollComponent = ({sendPoll}) => {
         if (ref.current.children)
             for (let i = 0; i  < numberOfInput.length; i ++)
                     poll.push({title: ref.current.children[i].children[0].value, votes: []})
-        sendPoll({name: pollName, choice: [...poll]});
+        setPoll({name: pollName, choice: [...poll]});
     }
 
-    useEffect(() => {
-        onSubmit();
-    }, [])
 
     return (
-        <div className="space-y-2 text-center w-80">
+        <div className="space-y-2 text-center w-full px-8">
             <div>Ajouter vote</div>
-            <input className="w-72 pl-2 rounded bg-gray-50" type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} placeholder="Vote pour..."/>
-            <div ref={ref} className="space-y-2 text-sm" >
+            <input className="w-full pl-2 rounded bg-gray-50" type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} placeholder="Vote pour..."/>
+            <div ref={ref} className="space-y-2 text-sm w" >
                 {numberOfInput.map((item, index) => (
                         <div key={index}>
-                            <input placeholder={`choix ${index + 1}`} type="text" className="w-72 pl-2 rounded bg-gray-50" />
+                            <input placeholder={`choix ${index + 1}`} type="text" className="w-full pl-2 rounded bg-gray-50" onChange={() => onSubmit()} />
                         </div>
                     )
                 )}
             </div>
-            <div className="flex justify-between px-4">
+            <div className="flex justify-center px-4">
                 <button onClick={() => {
                     setNumberOfInput((prev) => ([...prev, prev.length + 1]))
                 }}>
                     <GrAdd />
                 </button>
-                <button className="px-4 py-1 bg-gray-50 rounded-xl font-bold" onClick={onSubmit}>valider</button>
             </div>
         </div>
     )

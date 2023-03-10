@@ -1,14 +1,14 @@
 import {BsArrowDownCircleFill} from "react-icons/bs";
-import {FaTelegramPlane, FaPoll, FaFacebookMessenger} from "react-icons/fa";
-import {useEffect, useState} from "react";
+import {FaTelegramPlane, FaPoll} from "react-icons/fa";
+import {useState} from "react";
 
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {addDoc, collection} from "firebase/firestore";
 import {db} from "../utils/firebase";
 import {useAppStateContext} from "../context/AppContextProvider";
-import {PollComponents} from "./PollComponents";
 import {TiDelete} from "react-icons/ti";
-import {CreatePollComponent} from "./CreatePollComponent";
+import {useChatStateContext} from "../context/ChatContextProvider";
+
 
 export const ChatInputComponent = ({goTop, reply, resetReply}) => {
 
@@ -20,9 +20,10 @@ export const ChatInputComponent = ({goTop, reply, resetReply}) => {
 
     const [text, setText] = useState("");
 
-    const [poll, setPoll] = useState(false);
-
-    const [pollItem, setPollItem] = useState(null);
+    const {
+        poll, setPoll,
+        openPoll, setOpenPoll
+    } = useChatStateContext();
 
     const addMessage = async (message) => {
 
@@ -33,13 +34,6 @@ export const ChatInputComponent = ({goTop, reply, resetReply}) => {
         }
     }
 
-    const receivePoll = (poll) => {
-        setPollItem(poll)
-    }
-
-    useEffect(() => {
-        setPollItem(null)
-    }, [poll])
 
     return (
         <div className="flex items-center space-x-4 px-4 w-full h-full text-gray-700">
@@ -48,20 +42,17 @@ export const ChatInputComponent = ({goTop, reply, resetReply}) => {
                 <BsArrowDownCircleFill size={20} />
             </button>
 
-            <button onClick={() => { setPoll((prev) => (!prev))}}>
-                {!poll ? <FaPoll size={20} /> : <TiDelete size={24} />}
-            </button>
-
+            {user.admin && <button onClick={() => {
+                setOpenPoll((prev) => (!prev))
+            }}>
+                {!openPoll ? <FaPoll size={20}/> : <TiDelete size={24}/>}
+            </button>}
 
             <div className="flex-1 relative bottom-0">
 
-                {poll && <div className="absolute bottom-12 flex py-4 justify-center   bg-gray-200 rounded-2xl" >
-                    <CreatePollComponent sendPoll={receivePoll} />
-                </div>}
-
                 {chatroom && ((chatroom.admin && user.admin) || !chatroom.admin)
                     ? <input type="text"
-                             className="flex-1 outline-none bg-transparent focus:border-none border-none"
+                             className="w-full outline-none bg-transparent focus:border-none border-none"
                              placeholder="Type something"
                              value={text}
                              onChange={(event) => {
@@ -73,7 +64,6 @@ export const ChatInputComponent = ({goTop, reply, resetReply}) => {
                 }
             </div>
 
-
             <button onClick={() => {
                 if (text != null && text !== "") {
                     addMessage({
@@ -81,12 +71,13 @@ export const ChatInputComponent = ({goTop, reply, resetReply}) => {
                         message: text,
                         date: Date.now(),
                         reply: reply,
-                        poll: pollItem
+                        poll: openPoll ? poll : null
                     }).then(() => {
                     });
                     goTop()
                     resetReply();
-                    setPoll(false)
+                    setOpenPoll(false)
+                    setPoll(null)
                     setText("");
                 }
             }}>

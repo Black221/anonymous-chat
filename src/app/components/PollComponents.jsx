@@ -14,7 +14,7 @@ export const PollComponents = ({name, choice, mesId }) => {
             if (!poll.choice[index].votes.filter((item) => (item === user.login))[0])
                 poll.choice[index].votes.push(user.login);
         } else
-            poll.choice[index].votes = poll.choice[index].vote.filter((item) => (item !== user.login));
+            poll.choice[index].votes = poll.choice[index].votes.filter((item) => (item !== user.login));
 
         try {
             await updateDoc(doc(db, "Messages", mesId), {poll : poll});
